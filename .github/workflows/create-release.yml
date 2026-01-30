@@ -1,0 +1,36 @@
+name: Create New Release
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ci:
+    name: Create New release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Package Code
+        run: python3 setup.py sdist bdist_wheel
+
+      - name: Create New Release
+        uses: ncipollo/release-action@v1
+        with:
+          draft: true
+          artifacts: "dist/*"
