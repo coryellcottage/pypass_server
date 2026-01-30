@@ -1,0 +1,8 @@
+pypass_server/__pycache__/
+pypass_server.egg-info/
+build/
+data/
+logs/
+dist/
+
+    "requests",

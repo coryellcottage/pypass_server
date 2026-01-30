@@ -1,0 +1,1 @@
+The official github repository for the pypass server. To download the pypass app, go [here](https://github.com/coryellcottage/pypass)
