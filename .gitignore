@@ -4,5 +4,3 @@ build/
 data/
 logs/
 dist/
-
-    "requests",

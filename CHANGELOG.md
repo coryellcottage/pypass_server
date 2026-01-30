@@ -1,1 +1,2 @@
-Edit distrobution steps for pypi script, and define working directory
+Edit .gitignore file
+Remove workflow to upload package to pypass
