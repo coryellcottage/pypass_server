@@ -27,10 +27,10 @@ jobs:
           python-version: "3.x"
 
       - name: Build release distributions
+        working-directory: ./
         run: |
           # NOTE: put your own distribution build steps here.
-          python -m pip install build
-          python -m build
+          python3 -m setup.py sdist bdist_wheel
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4

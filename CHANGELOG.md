@@ -1,3 +1,1 @@
-Define body when new release gets created
-Define default working directory
-Add CHANGELOG file
+Edit distrobution steps for pypi script, and define working directory
