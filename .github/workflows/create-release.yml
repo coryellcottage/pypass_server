@@ -16,6 +16,7 @@ defaults:
 jobs:
   ci:
     name: Create New release
+    runs-on: "ubuntu-latest"
 
     steps:
       - name: Checkout
