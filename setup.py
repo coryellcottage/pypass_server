@@ -22,6 +22,6 @@ setup(
         "schedule==1.2.2"
     ],
     name="pypass_server",
-    version="1.0.0",
+    version="1.0.1",
 
 )
