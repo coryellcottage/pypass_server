@@ -1,4 +1,4 @@
 netifaces==0.11.0
 json_repair==0.55.1
-cryptography==46.0.4
+cryptography==42.0.8
 schedule==1.2.2

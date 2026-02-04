@@ -1,3 +1,3 @@
 Increment version number 
 <br/>
-Make requirements mirror requirements.txt file
+Change required version of cryptography to the latest version available for android
