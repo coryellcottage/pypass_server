@@ -104,7 +104,17 @@ def start_server(interactive: bool = False, server_interface=None, server_port: 
                 "reason": "Server interface or server port is required, but not specified."
             }
 
-    server_event_loop(schedule_thread=schedule_thread, interface=server_interface, port=server_port)
+    if interactive:
+        server_event_loop(interface=server_interface, port=server_port)
+
+    else:
+        threading.Thread(
+            target=server_event_loop,
+            kwargs={
+                "interface": server_interface,
+                "port": server_port
+            }
+        ).start()
 
     if schedule_thread is not None:
         return {
@@ -121,7 +131,7 @@ def start_server(interactive: bool = False, server_interface=None, server_port: 
             "message": "Successfully started server"
         }
 
-def server_event_loop(schedule_thread: threading.Thread, interface, port: int):
+def server_event_loop(interface, port: int):
     global client_connected, logger, client
 
     try:
@@ -150,28 +160,14 @@ def server_event_loop(schedule_thread: threading.Thread, interface, port: int):
 
         logger.error(f"Error occurred: {e}. Shutting down")
         print("Exception, shutting down")
-        stop_event.set()
-        schedule_thread.join()
 
-        if client_connected:
-            logger.info("Client(s) still connected, closing connection")
-            print("Client(s) connected, closing connection")
-            client.close()
-
-            client_connected = False
+        stop_server()
 
     except KeyboardInterrupt:
         logger.info("Keyboard interrupt received, shutting down")
         print("Keyboard interrupt, shutting down")
-        stop_event.set()
-        schedule_thread.join()
 
-        if client_connected:
-            logger.info("Client(s) still connected, closing connection")
-            print("Client(s) connected, closing connection")
-            client.close()
-
-            client_connected = False
+        stop_server()
 
 def get_connection_data(interface, port: int) -> tuple:
     if os.path.exists("data/data.json"):
