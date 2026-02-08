@@ -372,7 +372,10 @@ class Client:
             logger.info("Received new message")
 
             if decrypted_data == "":
-                logger.warning("Received empty message, returning")
+                global client
+
+                logger.warning("Received empty message, closing connection and returning")
+                client.close()
                 return
 
             # logger.info("Decrypting data")
