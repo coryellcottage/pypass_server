@@ -137,8 +137,25 @@ def server_event_loop(interface, port: int):
     try:
         server_data = get_connection_data(interface, port)
 
+        print(f"Server connection details: {server_data}")
+
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server.bind(server_data)
+        
+        try:
+            server.bind(server_data)
+
+        except OSError:
+            logger.warning("OSError caught. Assuming invalid IP saved, attempting to get IP from server interface")
+            server_data = (
+                    netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["addr"],
+                    port
+                )
+
+            server.bind(server_data)
+
+            with open(Path("data/data.json"), mode="w") as server_data_file:
+                json.dump(server_data, server_data_file)
+
         server.settimeout(10.0)
         server.listen()
 
@@ -568,7 +585,10 @@ class Client:
             logger.info("User already has data saved, loading saved data")
 
             # User has data already saved, load it and return it
-            saved_passwords: dict = json.loads(json_repair.from_file(f"data/{self.client_addr}/{self.client_user.decode()}/.passwords.json"))
+            saved_passwords: dict or str = json_repair.from_file(f"data/{self.client_addr}/{self.client_user.decode()}/.passwords.json")
+
+            if saved_passwords is not dict:
+                saved_passwords: dict = json.loads(saved_passwords)
             print(f"Saved passwords are: {saved_passwords} and are of type: {type(saved_passwords)}")
 
             # Check if data was successfully loaded
